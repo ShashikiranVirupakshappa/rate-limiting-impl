@@ -10,6 +10,7 @@ public class TokenBucket {
     private LocalDateTime refilledLocalDateTime = LocalDateTime.now();
     private static final int REFILL_INTERVAL = 10000;
     private static final BigInteger NUM_OF_TOKEN = BigInteger.valueOf(1000L);
+    private static final int TOKEN_CAPACITY = 10000;
 
     public TokenBucket(BigInteger availableTokens) {
         if(availableTokens.longValue() < 0)
@@ -19,9 +20,12 @@ public class TokenBucket {
 
     //if elapsed time is greater than the refill interval then try adding 1000 more tokens to the available tokens or else it will come out by doing nothing
     private synchronized void refill() {
-        if(ChronoUnit.MILLIS.between(refilledLocalDateTime, LocalDateTime.now()) > REFILL_INTERVAL) {
+        if(ChronoUnit.MILLIS.between(refilledLocalDateTime, LocalDateTime.now()) > REFILL_INTERVAL && availableTokens.intValue() < TOKEN_CAPACITY) {
             availableTokens = availableTokens.add(NUM_OF_TOKEN);
             refilledLocalDateTime = LocalDateTime.now();
+        }
+        if(availableTokens.intValue() > TOKEN_CAPACITY) {
+            System.out.println("available tokens exceeded the capacity of the token bucket");
         }
     }
 

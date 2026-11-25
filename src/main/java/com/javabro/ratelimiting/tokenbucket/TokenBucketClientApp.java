@@ -1,11 +1,10 @@
 package com.javabro.ratelimiting.tokenbucket;
 
-import java.math.BigInteger;
-
 public class TokenBucketClientApp {
     public static void main(String[] args) throws Exception {
 
-        TokenBucket tokenBucket = new TokenBucket(BigInteger.valueOf(1000L));
+        //TokenBucket tokenBucket = new TokenBucket(BigInteger.valueOf(1000L));
+        TokenBucket tokenBucket = new TokenBucket(null);
 
         while(true) {
             try {
